@@ -12,6 +12,7 @@ from dateutil.relativedelta import relativedelta, weekday
 from dateutil.easter import easter
 import pandas.tslib as tslib
 from pandas.tslib import Timestamp, OutOfBoundsDatetime, Timedelta
+from pandas._offsets import DateOffset2
 
 import functools
 
