@@ -34,21 +34,25 @@ cdef class DateOffset2:
 
     cdef public:
         int n
-        int months
+        object kwds
 
-    def __init__(self, n=0, months=0):
+    def __init__(self, n=0, years=0, months=0, weeks=0, days=0, hours=0,
+                 minutes=0, seconds=0, nanoseconds=0)
         self.n = n
-        self.months = months
+        self.n
+        self.kwds = kwds
+        # self.months = months
 
-    cdef _apply(self, int64_t other):
-        """ internal portion of apply, operates on int """
+    cdef int64_t _apply(self, int64_t other):
+        """ internal portion of apply, operates on int64 """
         cdef:
             pandas_datetimestruct dts
             int days_in_month
+            int months = self.kwds['months']
 
         pandas_datetime_to_datetimestruct(other, PANDAS_FR_ns, &dts)
-        dts.year = _year_add_months(dts, self.months)
-        dts.month = _month_add_months(dts, self.months)
+        dts.year = _year_add_months(dts, months)
+        dts.month = _month_add_months(dts, months)
         #prevent day from wrapping around month end
         days_in_month = days_per_month_table[is_leapyear(dts.year)][dts.month-1]
         dts.day = min(dts.day, days_in_month)
@@ -64,11 +68,12 @@ cdef class DateOffset2:
         cdef:
             int64_t[:] values
             int64_t[:] out
-            Py_ssize_t i
+            Py_ssize_t i, N
 
         values = dti.asi8
-        out = np.zeros_like(values)
-        for i in range(len(values)):
+        N = len(values)
+        out = np.empty(N, dtype='int64')
+        for i in range(N):
             if values[i] == NPY_NAT:
                 out[i] = NPY_NAT
             else:
