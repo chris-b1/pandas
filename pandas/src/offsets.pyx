@@ -34,34 +34,39 @@ cdef class DateOffset2:
 
     cdef public:
         int n
-        object kwds
+        int years, months, weeks, days, hours, minutes, seconds, nanoseconds
 
     def __init__(self, n=0, years=0, months=0, weeks=0, days=0, hours=0,
-                 minutes=0, seconds=0, nanoseconds=0)
+                 minutes=0, seconds=0, nanoseconds=0):
         self.n = n
-        self.n
-        self.kwds = kwds
-        # self.months = months
+        self.years = years
+        self.months = months
+        self.weeks = weeks
+        self.days = days
+        self.hours = hours
+        self.minutes = minutes
+        self.seconds = seconds
+        self.nanoseconds = nanoseconds
 
     cdef int64_t _apply(self, int64_t other):
         """ internal portion of apply, operates on int64 """
         cdef:
             pandas_datetimestruct dts
             int days_in_month
-            int months = self.kwds['months']
 
         pandas_datetime_to_datetimestruct(other, PANDAS_FR_ns, &dts)
-        dts.year = _year_add_months(dts, months)
-        dts.month = _month_add_months(dts, months)
+        dts.year = _year_add_months(dts, self.months)
+        dts.month = _month_add_months(dts, self.months)
         #prevent day from wrapping around month end
         days_in_month = days_per_month_table[is_leapyear(dts.year)][dts.month-1]
         dts.day = min(dts.day, days_in_month)
+        # would fill in the reast of the relativedelta algo here
+        # ......
         return pandas_datetimestruct_to_datetime(PANDAS_FR_ns, &dts)
 
 
     cpdef apply(self, other):
-        cdef:
-            int64_t value
+        # would have to handle other datetime types
         return Timestamp(self._apply(other.value))
 
     cpdef apply_index(self, dti):
