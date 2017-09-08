@@ -59,6 +59,9 @@ matrix:
     - dist: trusty
       env:
         - JOB="3.6" TEST_ARGS="--skip-slow --skip-network" PANDAS_TESTING_MODE="deprecate" CONDA_FORGE=true
+    - dist: trusty
+      env:
+        - JOB="3.4" TEST_ARGS="--skip-slow --skip-network"
     # In allow_failures
     - dist: trusty
       env:
