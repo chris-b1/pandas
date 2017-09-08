@@ -1,0 +1,4 @@
+Requirement already satisfied: pytest in c:\users\chris\anaconda\envs\pandas-dev35\lib\site-packages
+Requirement already satisfied: py>=1.4.29 in c:\users\chris\anaconda\envs\pandas-dev35\lib\site-packages (from pytest)
+Requirement already satisfied: colorama; sys_platform == "win32" in c:\users\chris\anaconda\envs\pandas-dev35\lib\site-packages (from pytest)
+Requirement already satisfied: setuptools in c:\users\chris\anaconda\envs\pandas-dev35\lib\site-packages\setuptools-27.2.0-py3.5.egg (from pytest)
