@@ -103,7 +103,6 @@ if [ -e ${REQ} ]; then
     time bash $REQ || exit 1
 fi
 
-# time conda install -n pandas pytest>=3.1.0
 time pip install "pytest>=3.1.0"
 time pip install pytest-xdist
 
